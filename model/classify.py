@@ -1,11 +1,8 @@
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 import torch
-
-
-
+from processing import *
 
 #creating the tokenize function
-
 def classify_text(model, tokenizer, text):
     inputs = tokenizer(text, return_tensors="pt")
     with torch.no_grad():
@@ -26,7 +23,7 @@ def classify_text(model, tokenizer, text):
         10: "Other Emails,college",
         11: "Other Emails,external"
     }
-    return label_mapping[predictions.item()]
+    return label_mapping[predictions.item()//2]
 
 
 
@@ -36,8 +33,6 @@ def email_classify(email_text):
     email_model = AutoModelForSequenceClassification.from_pretrained(EMAIL_PATH)
 
     #Email prediction and categorize
-
-
     email_prediction = classify_text(email_model, tokenizer_email, email_text)
     print(f"Predicted Email Category: {email_prediction}")
     #Just printing the output for now, will connect with sql later
@@ -53,16 +48,18 @@ def ques_classify(ques_text):
 
     #creating the model
     question_model = AutoModelForSequenceClassification.from_pretrained(QUESTION_PATH)
-
-    question_prediction = classify_text(question_model, tokenizer_ques, question_text)
+    question_prediction = classify_text(question_model, tokenizer_ques, ques_text)
     
     print(f"Predicted Question Category: {question_prediction}")
     return
 
-
+##################
 email_text = "26-07-2023 14:30 Rajesh Patel rajesh.patel@vit.ac.in Internship Opportunity at Google We are excited to announce that we have partnered with Google to offer a 3-month internship program for students. The program is designed to provide hands-on experience in software development and will include a stipend of $5000. If you are interested, please reply to this email by August 1st."
 email_classify(email_text)
 question_text = "When is the last date to apply for the recent google internship email from college?"
 ques_classify(question_text)
+##################
 
+answer = qnamodel(email_text,question_text)
+print(answer)
 
