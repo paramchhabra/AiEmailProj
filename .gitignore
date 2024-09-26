@@ -1,0 +1,5 @@
+__pycache__/
+api/__pycache__/
+api/client.json
+api/cert.pem
+api/key.pem
