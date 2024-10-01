@@ -36,7 +36,7 @@ def email_classify(email_text):
     email_prediction = classify_text(email_model, tokenizer_email, email_text)
     print(f"Predicted Email Category: {email_prediction}")
     #Just printing the output for now, will connect with sql later
-    return
+    return email_prediction
 
 
 
